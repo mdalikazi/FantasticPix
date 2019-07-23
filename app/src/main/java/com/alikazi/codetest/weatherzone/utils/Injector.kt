@@ -1,6 +1,6 @@
 package com.alikazi.codetest.weatherzone.utils
 
-import com.alikazi.codetest.weatherzone.main.AppRepository
+import com.alikazi.codetest.weatherzone.repository.AppRepository
 import com.alikazi.codetest.weatherzone.viewmodel.ViewModelFactory
 
 object Injector {

@@ -2,7 +2,7 @@ package com.alikazi.codetest.weatherzone.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.alikazi.codetest.weatherzone.main.AppRepository
+import com.alikazi.codetest.weatherzone.repository.AppRepository
 
 class ViewModelFactory(private val repository: AppRepository) : ViewModelProvider.Factory {
 
