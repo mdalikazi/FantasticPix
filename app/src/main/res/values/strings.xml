@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">CodeTest - Weatherzone</string>
-    <string name="main_fragment_empty_message">Search for wallpapers</string>
+    <string name="main_fragment_empty_message_default">Search and see image results from Pexel</string>
+    <string name="main_fragment_empty_message_network_error">Sorry, your search did not return any results.</string>
 </resources>

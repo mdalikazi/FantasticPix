@@ -21,6 +21,7 @@ class MainFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+	    retainInstance = true
 
 	    photosAdapter = PhotosAdapter(activity)
 	    photoViewModel = ViewModelProviders.of(this, Injector.provideViewModelFactory())
@@ -33,6 +34,8 @@ class MainFragment : Fragment() {
 
 	    photoViewModel.networkErrors.observe(this, Observer {
 		    DLog.d("error $it")
+		    mainFragmentEmptyMessageTextView.text = getString(R.string.main_fragment_empty_message_network_error)
+		    showHideEmptyMessage(it.isNotEmpty() && it.isNotBlank())
 	    })
     }
 
@@ -49,4 +52,17 @@ class MainFragment : Fragment() {
 		    }
 	    }
     }
+
+	private fun showHideEmptyMessage(show: Boolean) {
+		when (show) {
+			true -> {
+				mainFragmentRecyclerView.visibility = View.GONE
+				mainFragmentEmptyMessageTextView.visibility = View.VISIBLE
+			}
+			else -> {
+				mainFragmentRecyclerView.visibility = View.VISIBLE
+				mainFragmentEmptyMessageTextView.visibility = View.GONE
+			}
+		}
+	}
 }

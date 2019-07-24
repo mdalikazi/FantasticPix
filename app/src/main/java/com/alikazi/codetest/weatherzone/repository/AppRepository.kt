@@ -18,7 +18,6 @@ class AppRepository {
         NetworkHelper.get(url, object: okhttp3.Callback {
             override fun onFailure(call: Call, e: IOException) {
                 viewModelQueryResponse._networkErrors.postValue(e.message)
-                DLog.d("network errors: ${viewModelQueryResponse._networkErrors}")
             }
 
             override fun onResponse(call: Call, response: Response) {

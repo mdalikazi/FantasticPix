@@ -42,7 +42,6 @@ object NetworkHelper {
         } catch (illegalStateException: IllegalStateException) {
             DLog.d("illegalStateException $illegalStateException")
         }
-        DLog.d("jsonString $jsonString")
         return null
     }
 }
