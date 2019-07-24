@@ -4,9 +4,10 @@ import com.alikazi.codetest.weatherzone.utils.Constants
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
+import java.net.URL
 import java.util.concurrent.Callable
 
-class CallableRequestsHelper (private val url: String,
+class CallableRequestsHelper (private val url: URL,
                               private val tag: String) : Callable<Response> {
 
     override fun call(): Response {

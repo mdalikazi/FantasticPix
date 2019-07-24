@@ -5,6 +5,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.alikazi.codetest.weatherzone.models.RequestResponseModels
 import com.alikazi.codetest.weatherzone.repository.AppRepository
+import com.alikazi.codetest.weatherzone.utils.DLog
 
 class PhotoViewModel(private val repository: AppRepository) : ViewModel() {
 
@@ -22,6 +23,7 @@ class PhotoViewModel(private val repository: AppRepository) : ViewModel() {
     }
 
     fun getPhotosWithQuery(request: RequestResponseModels.QueryRequest) {
+	    DLog.i("getPhotosWithQuery")
         queryRequestLiveData.postValue(request)
     }
 
