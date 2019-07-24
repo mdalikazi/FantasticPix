@@ -13,19 +13,23 @@ import com.alikazi.codetest.weatherzone.utils.DLog
 import com.alikazi.codetest.weatherzone.utils.Injector
 import com.alikazi.codetest.weatherzone.viewmodel.PhotoViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
+import java.util.concurrent.Executors
 
 class MainFragment : Fragment() {
 
     private lateinit var photoViewModel: PhotoViewModel
+	private lateinit var photosAdapter: PhotosAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        photoViewModel = ViewModelProviders.of(this, Injector.provideViewModelFactory())
+	    photosAdapter = PhotosAdapter(activity)
+	    photoViewModel = ViewModelProviders.of(this, Injector.provideViewModelFactory())
             .get(PhotoViewModel::class.java)
 
 	    photoViewModel.photos.observe(this, Observer {
 		    DLog.d("photos size ${it?.size}")
+		    photosAdapter.submitList(it)
 	    })
 
 	    photoViewModel.networkErrors.observe(this, Observer {
@@ -38,9 +42,14 @@ class MainFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        buttonGo.setOnClickListener {
-            var queryRequest = RequestResponseModels.ViewModelQueryRequest(textViewQuery.text.toString())
-            photoViewModel.getPhotosWithQuery(queryRequest)
-        }
+	    if (savedInstanceState == null) {
+		    mainFragmentRecyclerView.adapter = photosAdapter
+		    buttonGo.setOnClickListener {
+			    var queryRequest = RequestResponseModels.ViewModelQueryRequest(textViewQuery.text.toString())
+			    Executors.newSingleThreadExecutor().execute {
+				    photoViewModel.getPhotosWithQuery(queryRequest)
+			    }
+		    }
+	    }
     }
 }

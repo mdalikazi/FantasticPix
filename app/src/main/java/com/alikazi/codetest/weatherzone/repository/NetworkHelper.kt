@@ -12,13 +12,14 @@ import java.util.concurrent.Executors
 
 object NetworkHelper {
 
+    val thread = Executors.newSingleThreadExecutor()
+
     fun requestEndpoint(url: URL, tag: String): Response? {
 	    DLog.i("requestEndpoint")
         var okHttpResponse: Response? = null
         var requests = ArrayList<CallableRequestsHelper>()
         requests.add(CallableRequestsHelper(url, tag))
-        val executor = Executors.newSingleThreadExecutor()
-        val results = executor.invokeAll(requests)
+        val results = thread.invokeAll(requests)
         for (response in results) {
             okHttpResponse = response.get()
         }

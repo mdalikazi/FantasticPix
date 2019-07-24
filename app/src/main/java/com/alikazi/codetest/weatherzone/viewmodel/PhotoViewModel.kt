@@ -1,24 +1,32 @@
 package com.alikazi.codetest.weatherzone.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.alikazi.codetest.weatherzone.models.Photo
 import com.alikazi.codetest.weatherzone.models.RequestResponseModels
 import com.alikazi.codetest.weatherzone.repository.AppRepository
 import com.alikazi.codetest.weatherzone.utils.DLog
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class PhotoViewModel(private val repository: AppRepository) : ViewModel() {
+
+    companion object {
+        val thread: ExecutorService = Executors.newSingleThreadExecutor()
+    }
 
     private var queryRequestLiveData = MutableLiveData<RequestResponseModels.ViewModelQueryRequest>()
     private var queryResponseLiveData = Transformations.map(queryRequestLiveData) {
         repository.getPhotoWithQueryFromApi(it)
     }
 
-    var photos = Transformations.switchMap(queryResponseLiveData) {
+    var photos: LiveData<ArrayList<Photo>?> = Transformations.switchMap(queryResponseLiveData) {
         it._photos
     }
 
-    var networkErrors = Transformations.switchMap(queryResponseLiveData) {
+    var networkErrors: LiveData<String> = Transformations.switchMap(queryResponseLiveData) {
         it._networkErrors
     }
 
