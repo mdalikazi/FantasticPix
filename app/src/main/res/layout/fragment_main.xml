@@ -6,10 +6,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+    <include
+            android:id="@+id/mainFragmentAppbar"
+            layout="@layout/custom_appbar" />
+
     <EditText
             android:id="@+id/textViewQuery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/mainFragmentAppbar"
             android:layout_margin="@dimen/small_padding"
             android:background="@color/colorTransparent"
             android:hint="Enter query"/>
