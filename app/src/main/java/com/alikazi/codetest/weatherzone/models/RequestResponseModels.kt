@@ -4,11 +4,11 @@ import androidx.lifecycle.MutableLiveData
 
 object RequestResponseModels {
 
-    class QueryRequest(query: String) {
+    class ViewModelQueryRequest(query: String) {
         var query = query
     }
 
-    class QueryResponse {
+    class ViewModelQueryResponse {
         val _photos = MutableLiveData<ArrayList<Photo>?>()
         val _networkErrors = MutableLiveData<String>()
     }

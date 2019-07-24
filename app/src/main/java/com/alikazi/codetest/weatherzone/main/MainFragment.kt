@@ -39,7 +39,7 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         buttonGo.setOnClickListener {
-            var queryRequest = RequestResponseModels.QueryRequest(textViewQuery.text.toString())
+            var queryRequest = RequestResponseModels.ViewModelQueryRequest(textViewQuery.text.toString())
             photoViewModel.getPhotosWithQuery(queryRequest)
         }
     }

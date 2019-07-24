@@ -10,5 +10,5 @@ data class Photo(
     var photographer: String,
     @SerializedName("photograher_url")
     var photograherUrl: String,
-    var src: List<Src> = emptyList()
+    var src: Src
 )

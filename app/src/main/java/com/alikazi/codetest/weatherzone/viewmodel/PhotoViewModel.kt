@@ -9,7 +9,7 @@ import com.alikazi.codetest.weatherzone.utils.DLog
 
 class PhotoViewModel(private val repository: AppRepository) : ViewModel() {
 
-    private var queryRequestLiveData = MutableLiveData<RequestResponseModels.QueryRequest>()
+    private var queryRequestLiveData = MutableLiveData<RequestResponseModels.ViewModelQueryRequest>()
     private var queryResponseLiveData = Transformations.map(queryRequestLiveData) {
         repository.getPhotoWithQueryFromApi(it)
     }
@@ -22,7 +22,7 @@ class PhotoViewModel(private val repository: AppRepository) : ViewModel() {
         it._networkErrors
     }
 
-    fun getPhotosWithQuery(request: RequestResponseModels.QueryRequest) {
+    fun getPhotosWithQuery(request: RequestResponseModels.ViewModelQueryRequest) {
 	    DLog.i("getPhotosWithQuery")
         queryRequestLiveData.postValue(request)
     }

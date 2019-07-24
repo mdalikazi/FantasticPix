@@ -1,10 +1,11 @@
 package com.alikazi.codetest.weatherzone.repository
 
 import android.net.Uri
-import com.alikazi.codetest.weatherzone.models.Photo
+import com.alikazi.codetest.weatherzone.models.QueryResponse
 import com.alikazi.codetest.weatherzone.utils.Constants
 import com.alikazi.codetest.weatherzone.utils.DLog
 import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
 import okhttp3.Response
 import java.net.URL
 import java.util.concurrent.Executors
@@ -36,7 +37,15 @@ object NetworkHelper {
         return URL(builder.build().toString())
     }
 
-    fun parsePhotosFromJson(jsonString: String?): List<Photo> {
-        return Gson().fromJson(jsonString, Array<Photo>::class.java).toList()
+    fun parseQueryResponseFromJson(jsonString: String?): QueryResponse? {
+        try {
+            return Gson().fromJson(jsonString, QueryResponse::class.java)
+        } catch (jsonSyntaxException: JsonSyntaxException) {
+            DLog.d("jsonSyntaxException $jsonSyntaxException")
+        } catch (illegalStateException: IllegalStateException) {
+            DLog.d("illegalStateException $illegalStateException")
+        }
+        DLog.d("jsonString $jsonString")
+        return null
     }
 }
