@@ -17,19 +17,25 @@ import kotlinx.android.synthetic.main.fragment_main.*
 class MainFragment : Fragment() {
 
     private lateinit var photoViewModel: PhotoViewModel
+	private lateinit var photosAdapter: PhotosAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+	    retainInstance = true
 
-        photoViewModel = ViewModelProviders.of(this, Injector.provideViewModelFactory())
+	    photosAdapter = PhotosAdapter(activity)
+	    photoViewModel = ViewModelProviders.of(this, Injector.provideViewModelFactory())
             .get(PhotoViewModel::class.java)
 
 	    photoViewModel.photos.observe(this, Observer {
 		    DLog.d("photos size ${it?.size}")
+		    photosAdapter.submitList(it)
 	    })
 
 	    photoViewModel.networkErrors.observe(this, Observer {
 		    DLog.d("error $it")
+		    mainFragmentEmptyMessageTextView.text = getString(R.string.main_fragment_empty_message_network_error)
+		    showHideEmptyMessage(it.isNotEmpty() && it.isNotBlank())
 	    })
     }
 
@@ -38,9 +44,25 @@ class MainFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        buttonGo.setOnClickListener {
-            var queryRequest = RequestResponseModels.ViewModelQueryRequest(textViewQuery.text.toString())
-            photoViewModel.getPhotosWithQuery(queryRequest)
-        }
+	    if (savedInstanceState == null) {
+		    mainFragmentRecyclerView.adapter = photosAdapter
+		    buttonGo.setOnClickListener {
+			    var queryRequest = RequestResponseModels.ViewModelQueryRequest(textViewQuery.text.toString())
+			    photoViewModel.getPhotosWithQuery(queryRequest)
+		    }
+	    }
     }
+
+	private fun showHideEmptyMessage(show: Boolean) {
+		when (show) {
+			true -> {
+				mainFragmentRecyclerView.visibility = View.GONE
+				mainFragmentEmptyMessageTextView.visibility = View.VISIBLE
+			}
+			else -> {
+				mainFragmentRecyclerView.visibility = View.VISIBLE
+				mainFragmentEmptyMessageTextView.visibility = View.GONE
+			}
+		}
+	}
 }
