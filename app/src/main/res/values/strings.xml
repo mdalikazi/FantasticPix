@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CodeTest - Weatherzone</string>
+    <string name="main_fragment_empty_message">Search for wallpapers</string>
 </resources>
