@@ -13,7 +13,6 @@ import com.alikazi.codetest.weatherzone.utils.DLog
 import com.alikazi.codetest.weatherzone.utils.Injector
 import com.alikazi.codetest.weatherzone.viewmodel.PhotoViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
-import java.util.concurrent.Executors
 
 class MainFragment : Fragment() {
 
@@ -46,9 +45,7 @@ class MainFragment : Fragment() {
 		    mainFragmentRecyclerView.adapter = photosAdapter
 		    buttonGo.setOnClickListener {
 			    var queryRequest = RequestResponseModels.ViewModelQueryRequest(textViewQuery.text.toString())
-			    Executors.newSingleThreadExecutor().execute {
-				    photoViewModel.getPhotosWithQuery(queryRequest)
-			    }
+			    photoViewModel.getPhotosWithQuery(queryRequest)
 		    }
 	    }
     }

@@ -14,30 +14,22 @@ import com.bumptech.glide.request.target.Target
 
 object ViewUtils {
 
-	fun loadImageWithGlide(context: Context, url: String, thumbnailUrl: String?, target: ImageView, progressBar: ProgressBar?) {
+	fun loadImageWithGlide(context: Context, url: String, thumbnailUrl: String?,
+	                       target: ImageView, progressBar: ProgressBar?) {
 		Glide.with(context)
 			.load(url)
 			.thumbnail(Glide.with(context).load(thumbnailUrl).centerCrop())
 			.transition(DrawableTransitionOptions().crossFade())
 			.centerCrop()
 			.listener(object: RequestListener<Drawable> {
-				override fun onLoadFailed(
-					e: GlideException?,
-					model: Any?,
-					target: Target<Drawable>?,
-					isFirstResource: Boolean
-				): Boolean {
+				override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?,
+				                          isFirstResource: Boolean): Boolean {
 					progressBar?.visibility = View.GONE
 					return false
 				}
 
-				override fun onResourceReady(
-					resource: Drawable?,
-					model: Any?,
-					target: Target<Drawable>?,
-					dataSource: DataSource?,
-					isFirstResource: Boolean
-				): Boolean {
+				override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?,
+				                             dataSource: DataSource?, isFirstResource: Boolean): Boolean {
 					progressBar?.visibility = View.GONE
 					return false
 				}

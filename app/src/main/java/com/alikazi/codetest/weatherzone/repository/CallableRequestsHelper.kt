@@ -7,14 +7,12 @@ import okhttp3.Response
 import java.net.URL
 import java.util.concurrent.Callable
 
-class CallableRequestsHelper (private val url: URL,
-                              private val tag: String) : Callable<Response> {
+class CallableRequestsHelper (private val url: URL) : Callable<Response> {
 
     override fun call(): Response {
         val request = Request.Builder()
             .header(Constants.HEADER_KEY_AUTHORIZATION, Constants.PEXELS_API_KEY)
             .url(url)
-            .tag(tag)
             .build()
 
         return return OkHttpClient().newCall(request).execute()

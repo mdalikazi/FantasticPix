@@ -7,15 +7,8 @@ import androidx.lifecycle.ViewModel
 import com.alikazi.codetest.weatherzone.models.Photo
 import com.alikazi.codetest.weatherzone.models.RequestResponseModels
 import com.alikazi.codetest.weatherzone.repository.AppRepository
-import com.alikazi.codetest.weatherzone.utils.DLog
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
 class PhotoViewModel(private val repository: AppRepository) : ViewModel() {
-
-    companion object {
-        val thread: ExecutorService = Executors.newSingleThreadExecutor()
-    }
 
     private var queryRequestLiveData = MutableLiveData<RequestResponseModels.ViewModelQueryRequest>()
     private var queryResponseLiveData = Transformations.map(queryRequestLiveData) {
@@ -31,7 +24,6 @@ class PhotoViewModel(private val repository: AppRepository) : ViewModel() {
     }
 
     fun getPhotosWithQuery(request: RequestResponseModels.ViewModelQueryRequest) {
-	    DLog.i("getPhotosWithQuery")
         queryRequestLiveData.postValue(request)
     }
 

@@ -6,24 +6,20 @@ import com.alikazi.codetest.weatherzone.utils.Constants
 import com.alikazi.codetest.weatherzone.utils.DLog
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
-import okhttp3.Response
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import java.net.URL
-import java.util.concurrent.Executors
 
 object NetworkHelper {
 
-    val thread = Executors.newSingleThreadExecutor()
+    fun get(url: URL, callback: Callback) {
+        val request = Request.Builder()
+            .header(Constants.HEADER_KEY_AUTHORIZATION, Constants.PEXELS_API_KEY)
+            .url(url)
+            .build()
 
-    fun requestEndpoint(url: URL, tag: String): Response? {
-	    DLog.i("requestEndpoint")
-        var okHttpResponse: Response? = null
-        var requests = ArrayList<CallableRequestsHelper>()
-        requests.add(CallableRequestsHelper(url, tag))
-        val results = thread.invokeAll(requests)
-        for (response in results) {
-            okHttpResponse = response.get()
-        }
-        return okHttpResponse
+        OkHttpClient().newCall(request).enqueue(callback)
     }
 
     fun queryUrlBuilder(query: String): URL {
