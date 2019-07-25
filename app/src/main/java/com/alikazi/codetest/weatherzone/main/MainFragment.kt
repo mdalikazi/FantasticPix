@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.alikazi.codetest.weatherzone.R
 import com.alikazi.codetest.weatherzone.models.RequestResponseModels
 import com.alikazi.codetest.weatherzone.utils.*
 import com.alikazi.codetest.weatherzone.viewmodel.PhotoViewModel
@@ -25,7 +26,6 @@ class MainFragment : Fragment(), WZSearchView.SearchViewEventsListener {
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		setHasOptionsMenu(true)
 		retainInstance = true
 
 		WZSearchView.setSearchViewEventsListener(this)
@@ -37,17 +37,17 @@ class MainFragment : Fragment(), WZSearchView.SearchViewEventsListener {
 		photoViewModel.photos.observe(this, Observer {
 			DLog.d("photos size ${it?.size}")
 			photosAdapter.submitList(it)
-			showEmptyMessageErrorOrNoResults(it.isNullOrEmpty())
+			showHideEmptyMessageWithError(it.isNullOrEmpty())
 		})
 
 		photoViewModel.networkErrors.observe(this, Observer {
 			DLog.d("error $it")
-			showEmptyMessageErrorOrNoResults(it.isNotEmpty() && it.isNotBlank())
+			showHideEmptyMessageWithError(it.isNotEmpty() && it.isNotBlank())
 		})
 	}
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-		return inflater.inflate(com.alikazi.codetest.weatherzone.R.layout.fragment_main, container, false)
+		return inflater.inflate(R.layout.fragment_main, container, false)
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,7 +60,6 @@ class MainFragment : Fragment(), WZSearchView.SearchViewEventsListener {
 	override fun onSearchQuerySubmit(query: String) {
 		if (query.isNotBlank()) {
 			submitQuery(query)
-			showHideEmptyMessage(false)
 		}
 	}
 
@@ -68,6 +67,7 @@ class MainFragment : Fragment(), WZSearchView.SearchViewEventsListener {
 		if (ConnectivityUtils.isNetworkConnected(activityContext)) {
 			val queryRequest = RequestResponseModels.ViewModelQueryRequest(query)
 			photoViewModel.getPhotosWithQuery(queryRequest)
+			showHideMainProgressBar(true)
 		} else {
 			Toast.makeText(activityContext, getString(com.alikazi.codetest.weatherzone.R.string.main_fragment_toast_message_no_network), Toast.LENGTH_LONG).show()
 		}
@@ -78,28 +78,27 @@ class MainFragment : Fragment(), WZSearchView.SearchViewEventsListener {
 		startActivity(browserIntent)
 	}
 
-	private fun showEmptyMessageErrorOrNoResults(show: Boolean) {
+	private fun showHideEmptyMessageWithError(show: Boolean) {
 		when (show) {
 			true -> {
-				mainFragmentEmptyMessageTextView.text = getString(com.alikazi.codetest.weatherzone.R.string.main_fragment_empty_message_network_error)
+				mainFragmentEmptyMessageTextView.text = getString(R.string.main_fragment_empty_message_network_error)
+				mainFragmentEmptyMessageTextView.visibility = View.VISIBLE
+				mainFragmentRecyclerView.visibility = View.GONE
 			}
 			else -> {
-				mainFragmentEmptyMessageTextView.text = getString(com.alikazi.codetest.weatherzone.R.string.main_fragment_empty_message_default)
+				mainFragmentEmptyMessageTextView.text = getString(R.string.main_fragment_empty_message_default)
+				mainFragmentEmptyMessageTextView.visibility = View.GONE
+				mainFragmentRecyclerView.visibility = View.VISIBLE
 			}
 		}
-		showHideEmptyMessage(show)
+		showHideMainProgressBar(false)
 	}
 
-	private fun showHideEmptyMessage(show: Boolean) {
+	private fun showHideMainProgressBar(show: Boolean) {
 		when (show) {
-			true -> {
-				mainFragmentRecyclerView.visibility = View.GONE
-				mainFragmentEmptyMessageTextView.visibility = View.VISIBLE
-			}
-			else -> {
-				mainFragmentRecyclerView.visibility = View.VISIBLE
-				mainFragmentEmptyMessageTextView.visibility = View.GONE
-			}
+			true -> mainFragmentProgressBar.visibility = View.VISIBLE
+			else -> mainFragmentProgressBar.visibility = View.GONE
 		}
+
 	}
 }
