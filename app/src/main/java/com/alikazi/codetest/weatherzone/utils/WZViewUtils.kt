@@ -12,7 +12,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 
-object ViewUtils {
+object WZViewUtils {
 
 	fun loadImageWithGlide(context: Context, url: String, thumbnailUrl: String?,
 	                       target: ImageView, progressBar: ProgressBar?) {

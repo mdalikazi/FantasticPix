@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.alikazi.codetest.weatherzone.R
 import com.alikazi.codetest.weatherzone.models.Photo
-import com.alikazi.codetest.weatherzone.utils.ViewUtils
+import com.alikazi.codetest.weatherzone.utils.WZViewUtils
 
 class PhotosAdapter(context: Context?) : ListAdapter<Photo, PhotosAdapter.PhotoItemViewHolder>(ITEM_COMPARATOR) {
 
@@ -34,7 +34,7 @@ class PhotosAdapter(context: Context?) : ListAdapter<Photo, PhotosAdapter.PhotoI
 
 	override fun onBindViewHolder(holder: PhotoItemViewHolder, position: Int) {
 		val photo = getItem(position)
-		ViewUtils.loadImageWithGlide(holder.itemView.context, photo.src.medium, photo.src.tiny,
+		WZViewUtils.loadImageWithGlide(holder.itemView.context, photo.src.medium, photo.src.tiny,
 			holder.photoImageView, holder.photoProgressBar)
 	}
 
