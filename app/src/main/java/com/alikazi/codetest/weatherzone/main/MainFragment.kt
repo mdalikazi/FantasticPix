@@ -42,6 +42,8 @@ class MainFragment : Fragment(), WZSearchView.SearchViewEventsListener {
 			mainFragmentEmptyMessageTextView.text = getString(R.string.main_fragment_empty_message_network_error)
 			showHideEmptyMessage(it.isNotEmpty() && it.isNotBlank())
 		})
+
+		WZSearchView.setSearchViewEventsListener(this)
 	}
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -55,14 +57,15 @@ class MainFragment : Fragment(), WZSearchView.SearchViewEventsListener {
 	}
 
 	override fun onSearchQuerySubmit(query: String) {
-		submitQuery(query)
+		if (!query.isNullOrBlank()) {
+			submitQuery(query)
+			showHideEmptyMessage(false)
+		}
 	}
 
-	private fun submitQuery(query: String?) {
-		if (!query.isNullOrBlank()) {
-			val queryRequest = RequestResponseModels.ViewModelQueryRequest(query)
-			photoViewModel.getPhotosWithQuery(queryRequest)
-		}
+	private fun submitQuery(query: String) {
+		val queryRequest = RequestResponseModels.ViewModelQueryRequest(query)
+		photoViewModel.getPhotosWithQuery(queryRequest)
 	}
 
 	private fun showHideEmptyMessage(show: Boolean) {

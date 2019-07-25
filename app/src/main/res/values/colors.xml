@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#03A9F4</color>
-    <color name="colorPrimaryDark">#0277BD</color>
-    <color name="colorAccent">#212121</color>
+    <color name="colorPrimary">#8BC34A</color>
+    <color name="colorPrimaryDark">#5A9216</color>
+    <color name="colorAccent">#FFAB00</color>
     <color name="colorTextPrimary">@android:color/primary_text_light</color>
     <color name="colorTextSecondary">@android:color/tertiary_text_light</color>
+    <color name="colorToolbarReveal">#2E7D32</color>
     <color name="colorTransparent">#00000000</color>
     <color name="colorWindowBackground">#E2E2E2</color>
-    <color name="colorBlack">#000000</color>
-    <color name="colorMessageBackground">#E3F2FD</color>
-    <color name="colorToolbarReveal">#E91E63</color>
-    <color name="colorLightGray">#F0F0F0</color>
-    <color name="colorDarkGray">#A0A0A0</color>
 
 </resources>

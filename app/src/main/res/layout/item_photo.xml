@@ -4,6 +4,8 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/large_padding"
+        android:layout_marginTop="@dimen/large_padding"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:selectableItemBackground">
@@ -12,8 +14,6 @@
             android:id="@+id/itemPhotoImageView"
             android:layout_width="160dp"
             android:layout_height="200dp"
-            android:layout_marginEnd="@dimen/large_padding"
-            android:layout_marginBottom="@dimen/large_padding"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
             tools:src="@android:mipmap/sym_def_app_icon"/>

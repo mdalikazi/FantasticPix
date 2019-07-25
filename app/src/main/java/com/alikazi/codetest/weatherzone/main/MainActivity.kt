@@ -2,7 +2,6 @@ package com.alikazi.codetest.weatherzone.main
 
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.annotation.VisibleForTesting
@@ -27,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(mainToolbar)
+        setupSearchViewAndRevealToolbar()
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
@@ -37,21 +37,33 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        super.onCreateOptionsMenu(menu)
-        MenuInflater(this).inflate(R.menu.menu_main, menu)
-        menu?.findItem(R.id.menu_main_search_icon)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-        customSearchView = WZSearchView(this, menu, revealAppBar)
-        return true
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun setupSearchViewAndRevealToolbar() {
+        customSearchView = WZSearchView(this, revealToolbar)
+        revealToolbar.setNavigationOnClickListener {
+            onBackPressed()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.menu_main_search_icon -> {
-            customSearchView.animateSearchView(revealAppBar.visibility != View.VISIBLE)
-            customSearchView.searchMenuItem?.expandActionView()
+            customSearchView.animateSearchView(revealToolbar.visibility != View.VISIBLE)
+            customSearchView.getSearchMenuItem()?.expandActionView()
             true
         }
         else -> {
             super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onBackPressed() {
+        if (revealToolbar.visibility == View.VISIBLE) {
+            customSearchView.animateSearchView(false)
+        } else {
+            super.onBackPressed()
         }
     }
 }

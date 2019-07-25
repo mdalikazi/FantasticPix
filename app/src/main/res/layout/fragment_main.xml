@@ -10,7 +10,6 @@
 			android:id="@+id/mainFragmentRecyclerView"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:layout_below="@+id/mainFragmentAppbar"
 			android:paddingStart="@dimen/regular_padding"
 			android:paddingEnd="@dimen/regular_padding"
 			android:clipToPadding="true"
