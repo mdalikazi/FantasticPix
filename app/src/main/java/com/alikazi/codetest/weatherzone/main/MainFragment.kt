@@ -68,7 +68,7 @@ class MainFragment : Fragment(), WZSearchView.SearchViewEventsListener {
 			photoViewModel.getPhotosWithQuery(queryRequest)
 			showHideMainProgressBar(true)
 		} else {
-			Toast.makeText(activityContext, getString(com.alikazi.codetest.weatherzone.R.string.main_fragment_toast_message_no_network), Toast.LENGTH_LONG).show()
+			Toast.makeText(activityContext, getString(R.string.main_fragment_toast_message_no_network), Toast.LENGTH_LONG).show()
 		}
 	}
 
@@ -93,6 +93,7 @@ class MainFragment : Fragment(), WZSearchView.SearchViewEventsListener {
 	}
 
 	private fun showHideMainProgressBar(show: Boolean) {
+		DLog.i("showHideMainProgressBar")
 		when (show) {
 			true -> mainFragmentProgressBar.visibility = View.VISIBLE
 			else -> mainFragmentProgressBar.visibility = View.GONE
