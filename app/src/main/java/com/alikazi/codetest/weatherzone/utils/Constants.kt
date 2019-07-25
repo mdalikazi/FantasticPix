@@ -4,6 +4,7 @@ object Constants {
 
     const val LOG_TAG = "WEATHERZONE"
 
+    const val URL_PEXELS_SITE = "http://www.pexels.com"
     const val HEADER_KEY_AUTHORIZATION = "Authorization"
     const val PEXELS_API_KEY = "563492ad6f91700001000001e0aa154e93164874bb37306f18397920"
 
@@ -16,4 +17,5 @@ object Constants {
     const val PARAM_PAGE = "page"
     const val PARAM_VALUE_PER_PAGE = "21"
     const val PARAM_VALUE_PAGE = "1"
+
 }
