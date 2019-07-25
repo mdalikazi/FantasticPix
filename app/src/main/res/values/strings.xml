@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">CodeTest - Weatherzone</string>
     <string name="menu_search_title">Search</string>
-    <string name="main_fragment_empty_message_default">Search and see results from Pexel</string>
+    <string name="main_fragment_empty_message_default">Search keywords to see images</string>
     <string name="main_fragment_empty_message_network_error">Sorry, your search did not return any results.</string>
+    <string name="main_fragment_toast_message_no_network">Looks like you are offline.</string>
+    <string name="main_fragment_powered_by">"Powered by "</string>
 </resources>

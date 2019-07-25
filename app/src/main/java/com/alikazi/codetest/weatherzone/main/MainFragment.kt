@@ -5,16 +5,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.alikazi.codetest.weatherzone.R
 import com.alikazi.codetest.weatherzone.models.RequestResponseModels
-import com.alikazi.codetest.weatherzone.utils.DLog
-import com.alikazi.codetest.weatherzone.utils.Injector
-import com.alikazi.codetest.weatherzone.utils.WZSearchView
+import com.alikazi.codetest.weatherzone.utils.*
+import com.alikazi.codetest.weatherzone.utils.Helpers.openUrlInBrowser
 import com.alikazi.codetest.weatherzone.viewmodel.PhotoViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
+
 
 class MainFragment : Fragment(), WZSearchView.SearchViewEventsListener {
 
@@ -24,9 +25,9 @@ class MainFragment : Fragment(), WZSearchView.SearchViewEventsListener {
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		setHasOptionsMenu(true)
 		retainInstance = true
 
+		WZSearchView.setSearchViewEventsListener(this)
 		activityContext = activity!!.applicationContext
 		photosAdapter = PhotosAdapter(activityContext)
 		photoViewModel = ViewModelProviders.of(this, Injector.provideViewModelFactory())
@@ -35,15 +36,13 @@ class MainFragment : Fragment(), WZSearchView.SearchViewEventsListener {
 		photoViewModel.photos.observe(this, Observer {
 			DLog.d("photos size ${it?.size}")
 			photosAdapter.submitList(it)
+			showHideEmptyMessageWithError(it.isNullOrEmpty())
 		})
 
 		photoViewModel.networkErrors.observe(this, Observer {
 			DLog.d("error $it")
-			mainFragmentEmptyMessageTextView.text = getString(R.string.main_fragment_empty_message_network_error)
-			showHideEmptyMessage(it.isNotEmpty() && it.isNotBlank())
+			showHideEmptyMessageWithError(it.isNotEmpty() && it.isNotBlank())
 		})
-
-		WZSearchView.setSearchViewEventsListener(this)
 	}
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -53,31 +52,51 @@ class MainFragment : Fragment(), WZSearchView.SearchViewEventsListener {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		if (savedInstanceState == null) {
 			mainFragmentRecyclerView.adapter = photosAdapter
+			mainFragmentPoweredByContainer.setOnClickListener { openPexelsWebsite() }
 		}
 	}
 
 	override fun onSearchQuerySubmit(query: String) {
-		if (!query.isNullOrBlank()) {
+		if (query.isNotBlank()) {
 			submitQuery(query)
-			showHideEmptyMessage(false)
 		}
 	}
 
 	private fun submitQuery(query: String) {
-		val queryRequest = RequestResponseModels.ViewModelQueryRequest(query)
-		photoViewModel.getPhotosWithQuery(queryRequest)
+		if (ConnectivityUtils.isNetworkConnected(activityContext)) {
+			val queryRequest = RequestResponseModels.ViewModelQueryRequest(query)
+			photoViewModel.getPhotosWithQuery(queryRequest)
+			showHideMainProgressBar(true)
+		} else {
+			Toast.makeText(activityContext, getString(com.alikazi.codetest.weatherzone.R.string.main_fragment_toast_message_no_network), Toast.LENGTH_LONG).show()
+		}
 	}
 
-	private fun showHideEmptyMessage(show: Boolean) {
+	private fun openPexelsWebsite() {
+		openUrlInBrowser(activityContext, Constants.URL_PEXELS_SITE)
+	}
+
+	private fun showHideEmptyMessageWithError(show: Boolean) {
 		when (show) {
 			true -> {
-				mainFragmentRecyclerView.visibility = View.GONE
+				mainFragmentEmptyMessageTextView.text = getString(R.string.main_fragment_empty_message_network_error)
 				mainFragmentEmptyMessageTextView.visibility = View.VISIBLE
+				mainFragmentRecyclerView.visibility = View.GONE
 			}
 			else -> {
-				mainFragmentRecyclerView.visibility = View.VISIBLE
+				mainFragmentEmptyMessageTextView.text = getString(R.string.main_fragment_empty_message_default)
 				mainFragmentEmptyMessageTextView.visibility = View.GONE
+				mainFragmentRecyclerView.visibility = View.VISIBLE
 			}
 		}
+		showHideMainProgressBar(false)
+	}
+
+	private fun showHideMainProgressBar(show: Boolean) {
+		when (show) {
+			true -> mainFragmentProgressBar.visibility = View.VISIBLE
+			else -> mainFragmentProgressBar.visibility = View.GONE
+		}
+
 	}
 }

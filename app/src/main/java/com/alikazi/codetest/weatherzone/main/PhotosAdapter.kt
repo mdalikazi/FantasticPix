@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.alikazi.codetest.weatherzone.R
 import com.alikazi.codetest.weatherzone.models.Photo
+import com.alikazi.codetest.weatherzone.utils.Helpers
 import com.alikazi.codetest.weatherzone.utils.WZViewUtils
 
 class PhotosAdapter(context: Context?) : ListAdapter<Photo, PhotosAdapter.PhotoItemViewHolder>(ITEM_COMPARATOR) {
@@ -34,12 +36,17 @@ class PhotosAdapter(context: Context?) : ListAdapter<Photo, PhotosAdapter.PhotoI
 
 	override fun onBindViewHolder(holder: PhotoItemViewHolder, position: Int) {
 		val photo = getItem(position)
+		holder.photoPhotographerNameTextView.text = photo.photographerName
+		holder.photoImageView.setOnClickListener {
+			Helpers.openUrlInBrowser(holder.itemView.context, photo.webUrl)
+		}
 		WZViewUtils.loadImageWithGlide(holder.itemView.context, photo.src.medium, photo.src.tiny,
 			holder.photoImageView, holder.photoProgressBar)
 	}
 
 	class PhotoItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 		val photoImageView: ImageView = view.findViewById(R.id.itemPhotoImageView)
+		val photoPhotographerNameTextView: TextView = view.findViewById(R.id.itemPhotoPhotographerNameTextView)
 		val photoProgressBar: ProgressBar = view.findViewById(R.id.itemPhotoProgressBar)
 	}
 
