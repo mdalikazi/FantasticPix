@@ -17,15 +17,14 @@
 		<androidx.recyclerview.widget.RecyclerView
 				android:id="@+id/mainFragmentRecyclerView"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
+				android:layout_height="match_parent"
 				android:clipToPadding="true"
 				android:visibility="gone"
 				android:fadingEdge="vertical"
 				android:fadingEdgeLength="@dimen/large_padding"
 				android:requiresFadingEdge="vertical"
-				android:overScrollMode="always"
 				app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-				app:spanCount="3"
+				app:spanCount="2"
 				tools:visibility="visible"
 				tools:listitem="@layout/item_photo"/>
 
