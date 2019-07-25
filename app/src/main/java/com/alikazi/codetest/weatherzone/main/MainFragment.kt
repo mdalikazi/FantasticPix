@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.alikazi.codetest.weatherzone.R
 import com.alikazi.codetest.weatherzone.models.RequestResponseModels
+import com.alikazi.codetest.weatherzone.utils.ConnectivityUtils
 import com.alikazi.codetest.weatherzone.utils.DLog
 import com.alikazi.codetest.weatherzone.utils.Injector
 import com.alikazi.codetest.weatherzone.utils.WZSearchView
@@ -27,6 +29,7 @@ class MainFragment : Fragment(), WZSearchView.SearchViewEventsListener {
 		setHasOptionsMenu(true)
 		retainInstance = true
 
+		WZSearchView.setSearchViewEventsListener(this)
 		activityContext = activity!!.applicationContext
 		photosAdapter = PhotosAdapter(activityContext)
 		photoViewModel = ViewModelProviders.of(this, Injector.provideViewModelFactory())
@@ -42,8 +45,6 @@ class MainFragment : Fragment(), WZSearchView.SearchViewEventsListener {
 			mainFragmentEmptyMessageTextView.text = getString(R.string.main_fragment_empty_message_network_error)
 			showHideEmptyMessage(it.isNotEmpty() && it.isNotBlank())
 		})
-
-		WZSearchView.setSearchViewEventsListener(this)
 	}
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -57,15 +58,19 @@ class MainFragment : Fragment(), WZSearchView.SearchViewEventsListener {
 	}
 
 	override fun onSearchQuerySubmit(query: String) {
-		if (!query.isNullOrBlank()) {
+		if (query.isNotBlank()) {
 			submitQuery(query)
 			showHideEmptyMessage(false)
 		}
 	}
 
 	private fun submitQuery(query: String) {
-		val queryRequest = RequestResponseModels.ViewModelQueryRequest(query)
-		photoViewModel.getPhotosWithQuery(queryRequest)
+		if (ConnectivityUtils.isNetworkConnected(activityContext)) {
+			val queryRequest = RequestResponseModels.ViewModelQueryRequest(query)
+			photoViewModel.getPhotosWithQuery(queryRequest)
+		} else {
+			Toast.makeText(activityContext, getString(R.string.main_fragment_toast_message_no_network), Toast.LENGTH_LONG).show()
+		}
 	}
 
 	private fun showHideEmptyMessage(show: Boolean) {
