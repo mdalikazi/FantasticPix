@@ -1,28 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
 		xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:app="http://schemas.android.com/apk/res-auto"
 		xmlns:tools="http://schemas.android.com/tools"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+		android:layout_height="match_parent"
+		android:weightSum="1"
+		android:orientation="vertical">
 
-	<androidx.recyclerview.widget.RecyclerView
-			android:id="@+id/mainFragmentRecyclerView"
+	<RelativeLayout
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:paddingStart="@dimen/large_padding"
-			android:clipToPadding="true"
-			android:visibility="gone"
-			app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-			app:spanCount="3"
-			tools:listitem="@layout/item_photo"/>
+			android:layout_height="0dp"
+			android:layout_weight="1"
+			android:layout_marginStart="@dimen/large_padding">
 
-	<TextView
-			style="@style/TextLargeSecondary"
-			android:id="@+id/mainFragmentEmptyMessageTextView"
-			android:layout_width="wrap_content"
+		<androidx.recyclerview.widget.RecyclerView
+				android:id="@+id/mainFragmentRecyclerView"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:clipToPadding="true"
+				android:visibility="gone"
+				android:fadingEdge="vertical"
+				android:fadingEdgeLength="@dimen/large_padding"
+				android:requiresFadingEdge="vertical"
+				android:overScrollMode="always"
+				app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+				app:spanCount="3"
+				tools:visibility="visible"
+				tools:listitem="@layout/item_photo"/>
+
+		<TextView
+				style="@style/TextLargeSecondary"
+				android:id="@+id/mainFragmentEmptyMessageTextView"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_centerInParent="true"
+				android:text="@string/main_fragment_empty_message_default"/>
+
+	</RelativeLayout>
+
+	<LinearLayout
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_centerInParent="true"
-			android:text="@string/main_fragment_empty_message_default"/>
+			android:layout_weight="1"
+			android:background="?android:selectableItemBackground"
+			android:clickable="true"
+			android:focusable="true"
+			android:padding="@dimen/small_padding"
+			android:gravity="center"
+			android:orientation="horizontal">
 
-</RelativeLayout>
+		<TextView
+				style="@style/TextAppearance.AppCompat.Medium"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:gravity="center"
+				android:text="@string/main_fragment_powered_by"/>
+
+		<ImageView
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:adjustViewBounds="true"
+				android:contentDescription="@string/main_fragment_powered_by"
+				android:scaleType="centerCrop"
+				android:padding="@dimen/small_padding"
+				android:src="@drawable/pexels_logo_black"/>
+
+	</LinearLayout>
+
+</LinearLayout>

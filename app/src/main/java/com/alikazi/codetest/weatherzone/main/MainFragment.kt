@@ -38,12 +38,12 @@ class MainFragment : Fragment(), WZSearchView.SearchViewEventsListener {
 		photoViewModel.photos.observe(this, Observer {
 			DLog.d("photos size ${it?.size}")
 			photosAdapter.submitList(it)
+			showEmptyMessageErrorOrNoResults(it.isNullOrEmpty())
 		})
 
 		photoViewModel.networkErrors.observe(this, Observer {
 			DLog.d("error $it")
-			mainFragmentEmptyMessageTextView.text = getString(R.string.main_fragment_empty_message_network_error)
-			showHideEmptyMessage(it.isNotEmpty() && it.isNotBlank())
+			showEmptyMessageErrorOrNoResults(it.isNotEmpty() && it.isNotBlank())
 		})
 	}
 
@@ -62,6 +62,18 @@ class MainFragment : Fragment(), WZSearchView.SearchViewEventsListener {
 			submitQuery(query)
 			showHideEmptyMessage(false)
 		}
+	}
+
+	private fun showEmptyMessageErrorOrNoResults(show: Boolean) {
+		when (show) {
+			true -> {
+				mainFragmentEmptyMessageTextView.text = getString(R.string.main_fragment_empty_message_network_error)
+			}
+			else -> {
+				mainFragmentEmptyMessageTextView.text = getString(R.string.main_fragment_empty_message_default)
+			}
+		}
+		showHideEmptyMessage(show)
 	}
 
 	private fun submitQuery(query: String) {
