@@ -1,8 +1,6 @@
 package com.alikazi.codetest.weatherzone.main
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.alikazi.codetest.weatherzone.R
 import com.alikazi.codetest.weatherzone.models.RequestResponseModels
 import com.alikazi.codetest.weatherzone.utils.*
+import com.alikazi.codetest.weatherzone.utils.Helpers.openUrlInBrowser
 import com.alikazi.codetest.weatherzone.viewmodel.PhotoViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 
@@ -74,8 +73,7 @@ class MainFragment : Fragment(), WZSearchView.SearchViewEventsListener {
 	}
 
 	private fun openPexelsWebsite() {
-		val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(Constants.URL_PEXELS_SITE))
-		startActivity(browserIntent)
+		openUrlInBrowser(activityContext, Constants.URL_PEXELS_SITE)
 	}
 
 	private fun showHideEmptyMessageWithError(show: Boolean) {
