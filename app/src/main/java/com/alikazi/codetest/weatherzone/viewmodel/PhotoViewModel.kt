@@ -16,7 +16,7 @@ class PhotoViewModel(private val repository: AppRepository) : ViewModel() {
         repository.loadPhotos(it)
     }
 
-    var photos: LiveData<PagedList<Photo>?> = Transformations.switchMap(queryResponseLiveData) {
+    var photos: LiveData<PagedList<Photo>> = Transformations.switchMap(queryResponseLiveData) {
         it._photos
     }
 

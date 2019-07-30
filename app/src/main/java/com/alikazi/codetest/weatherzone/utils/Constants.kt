@@ -15,7 +15,6 @@ object Constants {
     const val PARAM_QUERY = "query"
     const val PARAM_PER_PAGE = "per_page"
     const val PARAM_PAGE = "page"
-    const val PARAM_VALUE_PER_PAGE = "21"
-    const val PARAM_VALUE_PAGE = "1"
+    const val PARAM_VALUE_PER_PAGE = "15"
 
 }

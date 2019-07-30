@@ -13,10 +13,10 @@ data class Photo(
     var width: Int,
     var height: Int,
     @SerializedName("url")
-    var webUrl: String? = "",
+    var webUrl: String = "",
     @SerializedName("photographer")
-    var photographerName: String? = "",
-    @SerializedName("photograher_url")
-    var photograherUrl: String? = "",
+    var photographerName: String = "",
+    @SerializedName("photographer_url")
+    var photograherUrl: String = "",
     var src: Src
 )

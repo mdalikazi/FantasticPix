@@ -53,6 +53,7 @@ class MainFragment : Fragment(), WZSearchView.SearchViewEventsListener {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		if (savedInstanceState == null) {
 			mainFragmentRecyclerView.adapter = photosAdapter
+			WZViewUtils.setRecyclerLayoutAnimation(activityContext, mainFragmentRecyclerView)
 			mainFragmentPoweredByContainer.setOnClickListener { openPexelsWebsite() }
 		}
 	}
