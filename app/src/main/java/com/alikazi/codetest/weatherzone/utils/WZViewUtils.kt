@@ -15,7 +15,7 @@ import com.bumptech.glide.request.target.Target
 
 object WZViewUtils {
 
-	fun loadImageWithGlide(context: Context, url: String, thumbnailUrl: String?,
+	fun loadImageWithGlide(context: Context, url: String?, thumbnailUrl: String?,
 	                       target: ImageView, progressBar: ProgressBar?) {
 		Glide.with(context)
 			.load(url)

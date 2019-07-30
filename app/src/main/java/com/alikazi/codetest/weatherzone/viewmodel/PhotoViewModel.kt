@@ -13,7 +13,7 @@ class PhotoViewModel(private val repository: AppRepository) : ViewModel() {
 
     private var queryRequestLiveData = MutableLiveData<RequestResponseModels.ViewModelQueryRequest>()
     private var queryResponseLiveData = Transformations.map(queryRequestLiveData) {
-        repository.getPhotoWithQueryFromApi(it)
+        repository.loadPhotos(it)
     }
 
     var photos: LiveData<PagedList<Photo>?> = Transformations.switchMap(queryResponseLiveData) {

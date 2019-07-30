@@ -15,6 +15,6 @@ class CallableRequestsHelper (private val url: URL) : Callable<Response> {
             .url(url)
             .build()
 
-        return return OkHttpClient().newCall(request).execute()
+        return OkHttpClient().newCall(request).execute()
     }
 }

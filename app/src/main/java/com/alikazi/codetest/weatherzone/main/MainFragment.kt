@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.alikazi.codetest.weatherzone.R
+import com.alikazi.codetest.weatherzone.database.AppDatabase
 import com.alikazi.codetest.weatherzone.models.RequestResponseModels
 import com.alikazi.codetest.weatherzone.utils.*
 import com.alikazi.codetest.weatherzone.utils.Helpers.openUrlInBrowser
@@ -30,7 +31,7 @@ class MainFragment : Fragment(), WZSearchView.SearchViewEventsListener {
 		WZSearchView.setSearchViewEventsListener(this)
 		activityContext = activity!!.applicationContext
 		photosAdapter = PhotosAdapter(activityContext)
-		photoViewModel = ViewModelProviders.of(this, Injector.provideViewModelFactory())
+		photoViewModel = ViewModelProviders.of(this, Injector.provideViewModelFactory(AppDatabase.getInstance(activityContext)))
 			.get(PhotoViewModel::class.java)
 
 		photoViewModel.photos.observe(this, Observer {

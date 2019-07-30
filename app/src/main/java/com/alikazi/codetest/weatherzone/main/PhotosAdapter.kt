@@ -35,12 +35,12 @@ class PhotosAdapter(context: Context?) : ListAdapter<Photo, PhotosAdapter.PhotoI
 	}
 
 	override fun onBindViewHolder(holder: PhotoItemViewHolder, position: Int) {
-		val photo = getItem(position)
-		holder.photoPhotographerNameTextView.text = photo.photographerName
+		val photo: Photo? = getItem(position)
+		holder.photoPhotographerNameTextView.text = photo?.photographerName ?: ""
 		holder.photoImageView.setOnClickListener {
-			Helpers.openUrlInBrowser(holder.itemView.context, photo.webUrl)
+			Helpers.openUrlInBrowser(holder.itemView.context, photo?.webUrl)
 		}
-		WZViewUtils.loadImageWithGlide(holder.itemView.context, photo.src.medium, photo.src.tiny,
+		WZViewUtils.loadImageWithGlide(holder.itemView.context, photo?.src?.medium, photo?.src?.tiny,
 			holder.photoImageView, holder.photoProgressBar)
 	}
 

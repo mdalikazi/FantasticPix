@@ -1,18 +1,14 @@
 package com.alikazi.codetest.weatherzone.models
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
 
 object RequestResponseModels {
 
-    class ViewModelQueryRequest(query: String, page: Int) {
-        var query = query
-        var page = page
-    }
+    data class ViewModelQueryRequest(val query: String)
 
-    class ViewModelQueryResponse {
-        val _photos = MutableLiveData<PagedList<Photo>?>()
-        val _networkErrors = MutableLiveData<String>()
-    }
+    data class PhotosPagedListResponse(val _photos: LiveData<PagedList<Photo>> = MutableLiveData(),
+                                       val _networkErrors: LiveData<String> = MutableLiveData())
 
 }

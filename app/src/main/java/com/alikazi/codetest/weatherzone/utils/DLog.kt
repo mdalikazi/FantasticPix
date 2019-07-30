@@ -29,13 +29,13 @@ object DLog {
 		}
 	}
 
-	fun w(tag: String, msg: String) {
+	fun w(msg: String) {
 		if (isLogcatEnabled) {
 			Log.w(Constants.LOG_TAG, getTextWithSource(msg))
 		}
 	}
 
-	fun e(tag: String, msg: String) {
+	fun e(msg: String) {
 		if (isLogcatEnabled) {
 			Log.e(Constants.LOG_TAG, getTextWithSource(msg))
 		}

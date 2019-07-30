@@ -11,6 +11,8 @@ import com.alikazi.codetest.weatherzone.models.Photo
 @TypeConverters(WZTypeConverters::class)
 abstract class AppDatabase : RoomDatabase() {
 
+	abstract fun photoDao(): PhotoDao
+
 	companion object {
 		private var databaseName = "WeatherZone.db"
 		private var INSTANCE: AppDatabase? = null

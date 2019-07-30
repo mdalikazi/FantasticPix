@@ -34,7 +34,7 @@ object NetworkHelper {
         return URL(builder.build().toString())
     }
 
-    fun parseQueryResponseFromJson(jsonString: String?): QueryResponse? {
+    fun parseQueryResponseFromJson(jsonString: String?): QueryResponse {
         try {
             return Gson().fromJson(jsonString, QueryResponse::class.java)
         } catch (jsonSyntaxException: JsonSyntaxException) {
@@ -42,6 +42,6 @@ object NetworkHelper {
         } catch (illegalStateException: IllegalStateException) {
             DLog.d("illegalStateException $illegalStateException")
         }
-        return null
+        return QueryResponse()
     }
 }
