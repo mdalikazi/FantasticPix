@@ -9,7 +9,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.RecyclerView
 import com.alikazi.codetest.weatherzone.R
+import com.alikazi.codetest.weatherzone.database.AppDatabase
 import com.alikazi.codetest.weatherzone.models.RequestResponseModels
 import com.alikazi.codetest.weatherzone.utils.*
 import com.alikazi.codetest.weatherzone.utils.Helpers.openUrlInBrowser
@@ -22,6 +24,7 @@ class MainFragment : Fragment(), WZSearchView.SearchViewEventsListener {
 	private lateinit var photoViewModel: PhotoViewModel
 	private lateinit var photosAdapter: PhotosAdapter
 	private lateinit var activityContext: Context
+	private lateinit var adapterObserver: RecyclerView.AdapterDataObserver
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -30,7 +33,7 @@ class MainFragment : Fragment(), WZSearchView.SearchViewEventsListener {
 		WZSearchView.setSearchViewEventsListener(this)
 		activityContext = activity!!.applicationContext
 		photosAdapter = PhotosAdapter(activityContext)
-		photoViewModel = ViewModelProviders.of(this, Injector.provideViewModelFactory())
+		photoViewModel = ViewModelProviders.of(this, Injector.provideViewModelFactory(AppDatabase.getInstance(activityContext)))
 			.get(PhotoViewModel::class.java)
 
 		photoViewModel.photos.observe(this, Observer {
@@ -43,6 +46,12 @@ class MainFragment : Fragment(), WZSearchView.SearchViewEventsListener {
 			DLog.d("error $it")
 			showHideEmptyMessageWithError(it.isNotEmpty() && it.isNotBlank())
 		})
+
+		adapterObserver = object: RecyclerView.AdapterDataObserver() {
+			override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+				mainFragmentRecyclerView.scrollToPosition(positionStart)
+			}
+		}
 	}
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -51,9 +60,16 @@ class MainFragment : Fragment(), WZSearchView.SearchViewEventsListener {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		if (savedInstanceState == null) {
+//			photosAdapter.registerAdapterDataObserver(adapterObserver)
 			mainFragmentRecyclerView.adapter = photosAdapter
+			WZViewUtils.setRecyclerLayoutAnimation(activityContext, mainFragmentRecyclerView)
 			mainFragmentPoweredByContainer.setOnClickListener { openPexelsWebsite() }
 		}
+	}
+
+	override fun onDestroyOptionsMenu() {
+		super.onDestroyOptionsMenu()
+//		photosAdapter.unregisterAdapterDataObserver(adapterObserver)
 	}
 
 	override fun onSearchQuerySubmit(query: String) {

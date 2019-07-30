@@ -22,19 +22,19 @@ object NetworkHelper {
         OkHttpClient().newCall(request).enqueue(callback)
     }
 
-    fun queryUrlBuilder(query: String): URL {
+    fun queryUrlBuilder(query: String, page: Int): URL {
         val builder = Uri.Builder()
             .scheme(Constants.SCHEME_HTTPS)
             .authority(Constants.AUTHORITY)
             .appendPath(Constants.PATH_V1)
-            .appendPath(Constants.PATh_SEARCH)
+            .appendPath(Constants.PATH_SEARCH)
             .appendQueryParameter(Constants.PARAM_QUERY, query)
             .appendQueryParameter(Constants.PARAM_PER_PAGE, Constants.PARAM_VALUE_PER_PAGE)
-            .appendQueryParameter(Constants.PARAM_PAGE, Constants.PARAM_VALUE_PAGE)
+            .appendQueryParameter(Constants.PARAM_PAGE, page.toString())
         return URL(builder.build().toString())
     }
 
-    fun parseQueryResponseFromJson(jsonString: String?): QueryResponse? {
+    fun parseQueryResponseFromJson(jsonString: String?): QueryResponse {
         try {
             return Gson().fromJson(jsonString, QueryResponse::class.java)
         } catch (jsonSyntaxException: JsonSyntaxException) {
@@ -42,6 +42,6 @@ object NetworkHelper {
         } catch (illegalStateException: IllegalStateException) {
             DLog.d("illegalStateException $illegalStateException")
         }
-        return null
+        return QueryResponse()
     }
 }

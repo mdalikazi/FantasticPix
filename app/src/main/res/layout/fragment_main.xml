@@ -29,12 +29,12 @@
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				android:clipToPadding="true"
-				android:visibility="gone"
 				android:fadingEdge="vertical"
 				android:fadingEdgeLength="@dimen/large_padding"
 				android:requiresFadingEdge="vertical"
-				app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+				android:visibility="gone"
 				app:spanCount="2"
+				app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
 				tools:visibility="visible"
 				tools:listitem="@layout/item_photo"/>
 

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.paging.PagedList
 import com.alikazi.codetest.weatherzone.models.Photo
 import com.alikazi.codetest.weatherzone.models.RequestResponseModels
 import com.alikazi.codetest.weatherzone.repository.AppRepository
@@ -12,10 +13,10 @@ class PhotoViewModel(private val repository: AppRepository) : ViewModel() {
 
     private var queryRequestLiveData = MutableLiveData<RequestResponseModels.ViewModelQueryRequest>()
     private var queryResponseLiveData = Transformations.map(queryRequestLiveData) {
-        repository.getPhotoWithQueryFromApi(it)
+        repository.loadPhotos(it)
     }
 
-    var photos: LiveData<ArrayList<Photo>?> = Transformations.switchMap(queryResponseLiveData) {
+    var photos: LiveData<PagedList<Photo>> = Transformations.switchMap(queryResponseLiveData) {
         it._photos
     }
 

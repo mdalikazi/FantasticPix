@@ -7,23 +7,23 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.alikazi.codetest.weatherzone.R
 import com.alikazi.codetest.weatherzone.models.Photo
 import com.alikazi.codetest.weatherzone.utils.Helpers
 import com.alikazi.codetest.weatherzone.utils.WZViewUtils
 
-class PhotosAdapter(context: Context?) : ListAdapter<Photo, PhotosAdapter.PhotoItemViewHolder>(ITEM_COMPARATOR) {
+class PhotosAdapter(context: Context?) : PagedListAdapter<Photo, PhotosAdapter.PhotoItemViewHolder>(ITEM_COMPARATOR) {
 
 	companion object {
 		val ITEM_COMPARATOR = object: DiffUtil.ItemCallback<Photo>() {
 			override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean =
-				oldItem.hashCode() == newItem.hashCode()
+				oldItem.id == newItem.id
 
 			override fun areContentsTheSame(oldItem: Photo, newItem: Photo): Boolean =
-				oldItem.id == newItem.id
+				oldItem == newItem
 		}
 	}
 
@@ -35,12 +35,12 @@ class PhotosAdapter(context: Context?) : ListAdapter<Photo, PhotosAdapter.PhotoI
 	}
 
 	override fun onBindViewHolder(holder: PhotoItemViewHolder, position: Int) {
-		val photo = getItem(position)
-		holder.photoPhotographerNameTextView.text = photo.photographerName
+		val photo: Photo? = getItem(position)
+		holder.photoPhotographerNameTextView.text = photo?.photographerName
 		holder.photoImageView.setOnClickListener {
-			Helpers.openUrlInBrowser(holder.itemView.context, photo.webUrl)
+			Helpers.openUrlInBrowser(holder.itemView.context, photo?.webUrl)
 		}
-		WZViewUtils.loadImageWithGlide(holder.itemView.context, photo.src.medium, photo.src.tiny,
+		WZViewUtils.loadImageWithGlide(holder.itemView.context, photo?.src?.medium, photo?.src?.tiny,
 			holder.photoImageView, holder.photoProgressBar)
 	}
 
