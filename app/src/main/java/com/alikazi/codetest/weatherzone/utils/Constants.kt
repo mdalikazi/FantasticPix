@@ -11,10 +11,10 @@ object Constants {
     const val SCHEME_HTTPS = "https"
     const val AUTHORITY = "api.pexels.com"
     const val PATH_V1 = "v1"
-    const val PATh_SEARCH = "search"
+    const val PATH_SEARCH = "search"
     const val PARAM_QUERY = "query"
     const val PARAM_PER_PAGE = "per_page"
     const val PARAM_PAGE = "page"
-    const val PARAM_VALUE_PER_PAGE = "15"
+    const val PARAM_VALUE_PER_PAGE = "10"
 
 }

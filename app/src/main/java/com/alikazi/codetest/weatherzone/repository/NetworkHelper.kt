@@ -27,7 +27,7 @@ object NetworkHelper {
             .scheme(Constants.SCHEME_HTTPS)
             .authority(Constants.AUTHORITY)
             .appendPath(Constants.PATH_V1)
-            .appendPath(Constants.PATh_SEARCH)
+            .appendPath(Constants.PATH_SEARCH)
             .appendQueryParameter(Constants.PARAM_QUERY, query)
             .appendQueryParameter(Constants.PARAM_PER_PAGE, Constants.PARAM_VALUE_PER_PAGE)
             .appendQueryParameter(Constants.PARAM_PAGE, page.toString())
