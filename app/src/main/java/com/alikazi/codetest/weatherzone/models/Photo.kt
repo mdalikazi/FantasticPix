@@ -18,5 +18,6 @@ data class Photo(
     var photographerName: String = "",
     @SerializedName("photographer_url")
     var photograherUrl: String = "",
-    var src: Src
+    var src: Src,
+    var searchQuery: String
 )
