@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.alikazi.codetest.weatherzone.models.Photo
 
-@Database(entities = [Photo::class], version = 1, exportSchema = true)
+@Database(entities = [Photo::class], version = 1, exportSchema = false)
 @TypeConverters(WZTypeConverters::class)
 abstract class AppDatabase : RoomDatabase() {
 

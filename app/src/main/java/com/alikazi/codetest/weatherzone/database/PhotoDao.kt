@@ -20,4 +20,12 @@ interface PhotoDao {
 	@Query("SELECT * FROM photo where id = :photoId")
 	fun getOnePhoto(photoId: Int): LiveData<Photo>
 
+	@Query("UPDATE Photo SET searchQuery = :searchQuery")
+	fun saveQuery(searchQuery: String)
+
+	@Query("SELECT searchQuery FROM photo")
+	fun getLastQuery(): String
+
+	@Query("DELETE FROM photo")
+	fun deleteAll()
 }

@@ -20,10 +20,10 @@ class PhotosAdapter(context: Context?) : PagedListAdapter<Photo, PhotosAdapter.P
 	companion object {
 		val ITEM_COMPARATOR = object: DiffUtil.ItemCallback<Photo>() {
 			override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean =
-				oldItem.id == newItem.id
+				oldItem.id == newItem.id && oldItem.searchQuery == newItem.searchQuery
 
 			override fun areContentsTheSame(oldItem: Photo, newItem: Photo): Boolean =
-				oldItem == newItem
+				oldItem == newItem && oldItem.searchQuery == newItem.searchQuery
 		}
 	}
 

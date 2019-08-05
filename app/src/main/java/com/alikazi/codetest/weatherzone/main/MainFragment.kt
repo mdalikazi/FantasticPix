@@ -60,16 +60,10 @@ class MainFragment : Fragment(), WZSearchView.SearchViewEventsListener {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		if (savedInstanceState == null) {
-//			photosAdapter.registerAdapterDataObserver(adapterObserver)
 			mainFragmentRecyclerView.adapter = photosAdapter
 			WZViewUtils.setRecyclerLayoutAnimation(activityContext, mainFragmentRecyclerView)
 			mainFragmentPoweredByContainer.setOnClickListener { openPexelsWebsite() }
 		}
-	}
-
-	override fun onDestroyOptionsMenu() {
-		super.onDestroyOptionsMenu()
-//		photosAdapter.unregisterAdapterDataObserver(adapterObserver)
 	}
 
 	override fun onSearchQuerySubmit(query: String) {

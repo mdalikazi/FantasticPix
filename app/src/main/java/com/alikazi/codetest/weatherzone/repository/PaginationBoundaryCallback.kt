@@ -11,10 +11,11 @@ import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Response
 import java.io.IOException
-
+import java.util.concurrent.Executors
 class PaginationBoundaryCallback(private val request: RequestResponseModels.ViewModelQueryRequest,
                                  private val databaseInstance: AppDatabase) : PagedList.BoundaryCallback<Photo>() {
 
+	private var executor = Executors.newSingleThreadExecutor()
 	private var lastRequestedPage = 1
 	private var isRequestInProgress = false
 	private var _networkErrors = MutableLiveData<String>()
@@ -22,8 +23,10 @@ class PaginationBoundaryCallback(private val request: RequestResponseModels.View
 
 	override fun onZeroItemsLoaded() {
 		DLog.i("onZeroItemsLoaded")
-		if (!isRequestInProgress) {
-			requestAndSaveData()
+		executor.execute {
+			if (!isRequestInProgress && checkIfLastQueryMatches()) {
+				requestAndSaveData()
+			}
 		}
 	}
 
@@ -35,24 +38,23 @@ class PaginationBoundaryCallback(private val request: RequestResponseModels.View
 	}
 
 	private fun requestAndSaveData() {
+		DLog.i("requestAndSaveData")
 		isRequestInProgress = true
-		DLog.i("getPhotoWithQueryFromApi")
 		val url = NetworkHelper.queryUrlBuilder(request.query, lastRequestedPage)
 		DLog.d("url $url")
-		NetworkHelper.get(url, object: Callback {
+
+		NetworkHelper.get(url, object : Callback {
 			override fun onFailure(call: Call, e: IOException) {
 				onFailure(e.message)
 			}
 
 			override fun onResponse(call: Call, response: Response) {
 				val queryResponse = NetworkHelper.parseQueryResponseFromJson(response.body?.string())
-				if (queryResponse != null) {
+				executor.execute {
 					databaseInstance.photoDao().savePhotos(queryResponse.photos)
-					lastRequestedPage++
-					isRequestInProgress = false
-				} else {
-					onFailure("Error")
 				}
+				lastRequestedPage++
+				isRequestInProgress = false
 			}
 		})
 	}
@@ -62,23 +64,15 @@ class PaginationBoundaryCallback(private val request: RequestResponseModels.View
 		isRequestInProgress = false
 	}
 
-	/*fun getPhotoWithQueryFromApi(request: RequestResponseModels.ViewModelQueryRequest):
-			RequestResponseModels.PhotosPagedListResponse {
-		DLog.i("getPhotoWithQueryFromApi")
-		var viewModelQueryResponse = RequestResponseModels.PhotosPagedListResponse()
-		val url = NetworkHelper.queryUrlBuilder(request.query, request.page)
-
-		NetworkHelper.get(url, object: okhttp3.Callback {
-			override fun onFailure(call: Call, e: IOException) {
-				viewModelQueryResponse._networkErrors.postValue(e.message)
+	private fun checkIfLastQueryMatches(): Boolean =
+		when (databaseInstance.photoDao().getLastQuery() == request.query) {
+			false -> {
+				databaseInstance.photoDao().deleteAll()
+				databaseInstance.photoDao().saveQuery(request.query)
+				true
 			}
+			else -> false
+		}
 
-			override fun onResponse(call: Call, response: Response) {
-				val queryResponse = NetworkHelper.parseQueryResponseFromJson(response.body?.string())
-				viewModelQueryResponse._photos.postValue(queryResponse?.photos as PagedList<Photo>?)
-			}
-		})
-
-		return viewModelQueryResponse
-	}*/
 }
+
