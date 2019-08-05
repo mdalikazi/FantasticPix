@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Pexels app</string>
+    <string name="app_name">Fantastic Pix</string>
     <string name="menu_search_title">Search</string>
     <string name="main_fragment_empty_message_default">Search keywords to see images</string>
     <string name="main_fragment_empty_message_network_error">Sorry, your search did not return any results.</string>
