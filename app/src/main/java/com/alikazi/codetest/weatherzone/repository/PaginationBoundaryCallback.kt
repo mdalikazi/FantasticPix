@@ -12,7 +12,6 @@ import okhttp3.Callback
 import okhttp3.Response
 import java.io.IOException
 import java.util.concurrent.Executors
-
 class PaginationBoundaryCallback(private val request: RequestResponseModels.ViewModelQueryRequest,
                                  private val databaseInstance: AppDatabase) : PagedList.BoundaryCallback<Photo>() {
 
@@ -66,11 +65,14 @@ class PaginationBoundaryCallback(private val request: RequestResponseModels.View
 	}
 
 	private fun checkIfLastQueryMatches(): Boolean =
-		if (databaseInstance.photoDao().getLastQuery() == request.query) {
-			true
-		} else {
-			databaseInstance.photoDao().deleteAll()
-			databaseInstance.photoDao().saveQuery(request.query)
-			false
+		when (databaseInstance.photoDao().getLastQuery() == request.query) {
+			false -> {
+				databaseInstance.photoDao().deleteAll()
+				databaseInstance.photoDao().saveQuery(request.query)
+				true
+			}
+			else -> false
 		}
+
 }
+
